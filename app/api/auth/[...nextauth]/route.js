@@ -14,16 +14,12 @@ const handler = NextAuth({
   callbacks: {
     async session({ session }) {
       // store the user id from MongoDB to session
-      try {
-        await connectToDB();
-        const sessionUser = await User.findOne({ email: session.user.email });
-        session.user.id = sessionUser._id.toString();
-      } catch (error) {
-        console.error("Error in session callback: ", error);
-      }
+      const sessionUser = await User.findOne({ email: session.user.email });
+      session.user.id = sessionUser._id.toString();
+
       return session;
     },
-    async signIn({ account, profile }) {
+    async signIn({ account, profile, user, credentials }) {
       try {
         await connectToDB();
 
@@ -39,13 +35,13 @@ const handler = NextAuth({
           });
         }
 
-        return true;
+        return true
       } catch (error) {
-        console.error("Error in signIn callback: ", error.message);
-        return false;
+        console.log("Error checking if user exists: ", error.message);
+        return false
       }
     },
   }
-});
+})
 
-export { handler as GET, handler as POST };
+export { handler as GET, handler as POST }
