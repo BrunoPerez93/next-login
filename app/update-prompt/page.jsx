@@ -1,38 +1,42 @@
 "use client";
 
-import { useEffect, useState, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import Form from "@components/Form";
 
 const UpdatePrompt = () => {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const promptId = searchParams.get("id");
-
+  const [promptId, setPromptId] = useState(null);
   const [post, setPost] = useState({ prompt: "", tag: "" });
   const [submitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    const getPromptDetails = async () => {
-      try {
-        const response = await fetch(`/api/prompt/${promptId}`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch prompt details");
+    const searchParams = new URLSearchParams(window.location.search);
+    const id = searchParams.get("id");
+    setPromptId(id);
+
+    if (id) {
+      const getPromptDetails = async () => {
+        try {
+          const response = await fetch(`/api/prompt/${id}`);
+          if (!response.ok) {
+            throw new Error("Failed to fetch prompt details");
+          }
+          const data = await response.json();
+
+          setPost({
+            prompt: data.prompt,
+            tag: data.tag,
+          });
+        } catch (error) {
+          console.error("Error fetching prompt details:", error);
         }
-        const data = await response.json();
+      };
 
-        setPost({
-          prompt: data.prompt,
-          tag: data.tag,
-        });
-      } catch (error) {
-        console.error("Error fetching prompt details:", error);
-      }
-    };
-
-    if (promptId) getPromptDetails();
-  }, [promptId]);
+      getPromptDetails();
+    }
+  }, []);
 
   const updatePrompt = async (e) => {
     e.preventDefault();
@@ -60,15 +64,13 @@ const UpdatePrompt = () => {
   };
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <Form
-        type="Edit"
-        post={post}
-        setPost={setPost}
-        submitting={submitting}
-        handleSubmit={updatePrompt}
-      />
-    </Suspense>
+    <Form
+      type="Edit"
+      post={post}
+      setPost={setPost}
+      submitting={submitting}
+      handleSubmit={updatePrompt}
+    />
   );
 };
 
