@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect,  } from "react";
-import { unstable_noStore as noStore } from "next/cache";
 
 import PromptCard from "./PromptCard";
 
@@ -28,7 +27,6 @@ const Feed = () => {
   const [searchedResults, setSearchedResults] = useState([]);
 
   const fetchPosts = async () => {
-    noStore();
     const response = await fetch("/api/prompt");
     const data = await response.json();
 

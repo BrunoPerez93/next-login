@@ -1,8 +1,6 @@
 import Feed from "@components/Feed";
-import { cookies } from "next/headers";
 
 export default function Home() {
-  cookies();
   return (
     <section className="w-full flex-center flex-col">
       <h1 className="head_text text-center">
