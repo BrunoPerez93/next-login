@@ -14,8 +14,8 @@ const CreatePrompt = () => {
   const [submitting, setIsSubmitting] = useState(false);
   const [post, setPost] = useState({ prompt: "", tag: "" });
 
-  const createPrompt = async () => {
-    // e.preventDefault();
+  const createPrompt = async (e) => {
+    e.preventDefault();
     setIsSubmitting(true);
 
     try {
@@ -28,8 +28,7 @@ const CreatePrompt = () => {
         }),
       });
 
-      revalidateTag("prompts");
-
+      revalidateTag('prompts')
       if (response.ok) {
         router.push("/");
       }
@@ -41,13 +40,13 @@ const CreatePrompt = () => {
   };
 
   return (
-    <Form
-      type="Create"
-      post={post}
-      setPost={setPost}
-      submitting={submitting}
-      handleSubmit={createPrompt}
-    />
+      <Form
+        type="Create"
+        post={post}
+        setPost={setPost}
+        submitting={submitting}
+        handleSubmit={createPrompt}
+      />
   );
 };
 
