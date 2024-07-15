@@ -5,7 +5,6 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 import Form from "@components/Form";
-import { revalidateTag } from "next/cache";
 
 const CreatePrompt = () => {
   const router = useRouter();
@@ -28,7 +27,6 @@ const CreatePrompt = () => {
         }),
       });
 
-      revalidateTag('prompts')
       if (response.ok) {
         router.push("/");
       }
