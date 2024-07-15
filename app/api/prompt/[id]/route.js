@@ -32,7 +32,7 @@ export const PATCH = async (request, { params }) => {
 
         await existingPrompt.save();
 
-        return new Response("Successfully updated the Prompts", { status: 200 });
+        return new Response("Successfully updated the Prompts ", { status: 200 });
     } catch (error) {
         return new Response("Error Updating Prompt", { status: 500 });
     }
