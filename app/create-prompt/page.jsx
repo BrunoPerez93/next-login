@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 import Form from "@components/Form";
+import { revalidateTag } from "next/cache";
 
 const CreatePrompt = () => {
   const router = useRouter();
@@ -13,8 +14,8 @@ const CreatePrompt = () => {
   const [submitting, setIsSubmitting] = useState(false);
   const [post, setPost] = useState({ prompt: "", tag: "" });
 
-  const createPrompt = async (e) => {
-    e.preventDefault();
+  const createPrompt = async () => {
+    // e.preventDefault();
     setIsSubmitting(true);
 
     try {
@@ -27,6 +28,8 @@ const CreatePrompt = () => {
         }),
       });
 
+      revalidateTag("prompts");
+
       if (response.ok) {
         router.push("/");
       }
@@ -38,13 +41,13 @@ const CreatePrompt = () => {
   };
 
   return (
-      <Form
-        type="Create"
-        post={post}
-        setPost={setPost}
-        submitting={submitting}
-        handleSubmit={createPrompt}
-      />
+    <Form
+      type="Create"
+      post={post}
+      setPost={setPost}
+      submitting={submitting}
+      handleSubmit={createPrompt}
+    />
   );
 };
 
