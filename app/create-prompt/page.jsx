@@ -28,7 +28,6 @@ const CreatePrompt = () => {
       });
 
       if (response.ok) {
-        await fetchPosts();
         router.push("/");
       }
     } catch (error) {
